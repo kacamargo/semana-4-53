@@ -6,6 +6,10 @@ const auth = require('../middlewares/auth');
 const router = routerx();
 
 router.post('/login', usuarioController.login);
-// Tener en cuenta si exiten mas funcionalidades para esta ruta como registrarse o listar usuario o algo asi
+router.post('/add', usuarioController.add);
+router.get('/list', usuarioController.list)
+router.put('/update', usuarioController.update)
+router.put('/activate', usuarioController.activate)
+router.put('/deactivate', usuarioController.deactivate)
 
 module.exports = router;

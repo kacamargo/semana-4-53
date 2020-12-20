@@ -17,18 +17,54 @@ module.exports = {
         
     },
 
-    register : async (req, res, next) => {
+    add : async (req, res, next) => {
         try {
             //const re = await Usuario.create();
-            
-            res.status(500).send('pendiente por hacer reto personal')
+            req.body.password = await bcrypt.hash(req.body.password, 10)
+            const reg = await Usuario.create(req.body) //Envia los datos a la bd
+            res.status(200).json(reg)
             
         } catch (error) {
             res.status(500).send({ message: 'Ocurrió un error' });
             next(error)
         }
     },
-
+    update: async (req,res,next) => {
+        try {
+            //Colocar aqui la funcion
+            let actPass = req.body.password
+            const consulData = await Usuario.findOne({where: { id: req.body.id}})
+            if (actPass != consulData.password){
+                req.body.password = await bcrypt.hash(actPass, 10)
+            }
+            const re = await Usuario.update( { nombre: req.body.nombre, password: req.body.password, rol: req.body.rol, email: req.body.email}
+                , {where: {id: req.body.id}})
+            res.status(200).json(re)
+        } catch (error) {
+            res.status(500).json({'error' : 'Oops paso algo'})
+            next(error)
+        }
+    },
+    activate: async (req,res,next) => {
+        try {
+            //Colocar aqui la funcion
+            const re = await Usuario.update({estado:1}, {where: {id:req.body.id}})
+            res.status(200).json(re)
+        } catch (error) {
+            res.status(500).json({'error' : 'Oops paso algo'})
+            next(error)
+        }
+    },
+    deactivate: async (req,res,next) => {
+        try {
+            //Colocar aqui la funcion
+            const re = await Usuario.update({estado:0}, {where: {id:req.body.id}})
+            res.status(200).json(re)
+        } catch (error) {
+            res.status(500).json({'error' : 'Oops paso algo'})
+            next(error) 
+        }
+    },
     login: async (req, res, next) => {
 
         try {
