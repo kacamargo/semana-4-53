@@ -32,6 +32,7 @@ module.exports = {
     update: async (req,res,next) => {
         try {
             //Colocar aqui la funcion
+            console.log(req.body)
             let actPass = req.body.password
             const consulData = await Usuario.findOne({where: { id: req.body.id}})
             if (actPass != consulData.password){
@@ -76,14 +77,14 @@ module.exports = {
  
                     if (contrasenhaValida)
                     {
-                        const token = servToken.encode(user.id, user.rol)
+                        const token = await servToken.encode(user.id, user.rol)
                         
                         res.status(200).send({
                             auth : true,
                             tokenReturn : token,
-                            user : user
+                            // user : user
+                            
                         })
-
                     }  else {
                         res.status(401).send({auth: false, tokenReturn:null, reason: "Constraseña invalida"} );
                     }

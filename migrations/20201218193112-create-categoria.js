@@ -15,7 +15,8 @@ module.exports = {
         type: Sequelize.STRING
       },
       estado: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 1,
       },
       createdAt: {
         allowNull: false,
